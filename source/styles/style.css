@@ -1,0 +1,8 @@
+:root {
+  --background-color: linear-gradient(90deg, rgb(21, 45, 180) 20.9%, rgb(65, 0, 102) 64.9%);
+}
+
+.page {
+  max-width: 100%;
+  background-image: var(--background-color);
+}
