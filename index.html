@@ -9,15 +9,18 @@
 </head>
 <body class="page">
   <main class="booking-page">
-    <form class="booking-page__form booking-form" action="">
-      <div class="booking-form_input-wrapper">
-        <input class="booking-form__input" type="number" name="guests" id="guests">
-        <input class="booking-form__input" type="number" name="rooms" id="rooms">
-        <input class="booking-form__input" type="date" name="dates" id="dates">
+    <form class="booking-page__form booking-form" action="https://echo.htmlacademy.ru" method="POST" id="search-form">
+      <div class="booking-form_input-wrapper booking-form_input-wrapper_top">
+        <input class="booking-form__input" type="date" name="dates" id="date-in" required>
+        <input class="booking-form__input" type="date" name="dates" id="date-out" required>
       </div>
-      <input class="booking-form__input booking-form__input_email" type="email" name="email" id="email">
-      <button class="button booking-form__button" type="submit">Bookin this!</button>
+      <div class="booking-form_input-wrapper booking-form_input-wrapper_bottom">
+        <input class="booking-form__input" type="number" name="guests" id="guests" placeholder="2" required>
+        <input class="booking-form__input" type="number" name="rooms" id="rooms" placeholder="1" required>
+      </div>
+      <button class="button booking-form__button" type="submit" id="search-button">Search!</button>
     </form>
   </main>
+  <script src="./source/scripts/script.js"></script>
 </body>
 </html>
