@@ -1,8 +1,67 @@
 :root {
-  --background-color: linear-gradient(90deg, rgb(21, 45, 180) 20.9%, rgb(65, 0, 102) 64.9%);
+  --background-color: linear-gradient(45deg, rgb(21, 45, 180) 10.9%, rgb(90, 29, 202) 40.5%, rgb(60, 4, 92) 74.9%);
+  --text-color: rgb(235, 221, 205);
+  --border-color: rgb(183, 216, 213);
+
+  font-size: 10px;
+  line-height: 20px;
+  box-sizing: border-box;
 }
 
 .page {
   max-width: 100%;
-  background-image: var(--background-color);
+  height: 100vh;
+  background: rgb(21, 45, 180);
+  background: var(--background-color) no-repeat;
+  color: var(--text-color);
+  border-color: var(--border-color);
+  margin: 0;
+  overflow: hidden;
+}
+
+.booking-page {
+  display: flex;
+  justify-content: center;
+}
+
+.booking-page__form {
+  margin: 200px;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 650px;
+  height: 200px;
+  padding: 10px;
+}
+
+.booking-form__input {
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 2rem;
+}
+
+.booking-form__input_email {
+  width: 100%;
+}
+
+.booking-form_input-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.button {
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
