@@ -1,4 +1,6 @@
-[
+'Use strict';
+
+const hotels = [
   {
   "amenities": ["breakfast"],
   "distance": 3.8,
@@ -624,4 +626,38 @@
   "stars": 1,
   "preview": "https://cdn.ostrovok.ru/t/120x120/mec/hotels/6000000/5380000/5370600/5370581/5370581_21_b.jpg"
   }
-]
+];
+
+const container = document.querySelector('.hotels-list');
+
+const getElementFromTemplate = function(data) {
+  const template = document.querySelector('#hotelTemplate');
+  let element = template.content.children[0].cloneNode(true);
+
+  element.querySelector('.hotel__stars').textContent = data.stars;
+  element.querySelector('.hotel__name').textContent = data.name;
+  element.querySelector('.hotel__distance').textContent = data.distance;
+  element.querySelector('.hotel__rating').textContent = data.rating;
+  element.querySelector('.hotel__favourite').textContent = data.favourite;
+  element.querySelector('.hotel__price').textContent = data.price;
+
+  let backgroundImage = new Image();
+
+  backgroundImage.onload = () => {
+    element.style.backgroundImage = `url(./source/${data.preview})`;
+  }
+
+  backgroundImage.onerror = () => {
+    element.classList.add('noimage');
+  }
+
+  element.style.backgroundImage = `url(./source/${data.preview})`;
+
+  return element;
+};
+
+hotels.forEach(hotel => {
+  const element = getElementFromTemplate(hotel);
+  console.log(element);
+  container.appendChild(element);
+});
