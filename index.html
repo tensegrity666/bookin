@@ -10,13 +10,21 @@
 <body class="page">
   <main class="booking-page">
     <form class="booking-page__form booking-form" action="https://echo.htmlacademy.ru" method="POST" id="search-form">
-      <div class="booking-form_input-wrapper booking-form_input-wrapper_top">
-        <input class="booking-form__input" type="date" name="dates" id="date-in" required>
-        <input class="booking-form__input" type="date" name="dates" id="date-out" required>
+      <div class="booking-form_input-wrapper booking-form_input-wrapper-top">
+        <label class="booking-form__label" for="date-in">Дата заезда
+          <input class="booking-form__input" type="date" name="dates" id="date-in" required>
+        </label>
+        <label class="booking-form__label" for="date-out">Дата выезда
+          <input class="booking-form__input" type="date" name="dates" id="date-out" required>
+        </label>
       </div>
-      <div class="booking-form_input-wrapper booking-form_input-wrapper_bottom">
-        <input class="booking-form__input" type="number" name="guests" id="guests" required>
-        <input class="booking-form__input" type="number" name="rooms" id="rooms" required >
+      <div class="booking-form_input-wrapper booking-form_input-wrapper-bottom">
+        <label class="booking-form__label" for="guests">Количество гостей
+          <input class="booking-form__input booking-form__input_number" type="number" name="guests" id="guests" required>
+        </label>
+        <label class="booking-form__label" for="rooms">Количество комнат
+          <input class="booking-form__input booking-form__input_number" type="number" name="rooms" id="rooms" required>
+        </label>
       </div>
       <button class="button booking-form__button" type="submit" id="search-button">Search!</button>
     </form>
