@@ -29,4 +29,17 @@ const GUESTS_DEFAULT = 2;
   guests.onchange = () => {
     setRoomsNumber(rooms, guests.value);
   }
+
+  formElement.onsubmit = (event) => {
+    event.preventDefault();
+
+    const dateToExpire = Date.now() + 5 * 24 * 60 * 60 * 1000;
+    const formattedDate = new Date(dateToExpire).toUTCString();
+
+    document.cookie = `guests=${guests.value};expires=${formattedDate}`;
+    document.cookie = `rooms=${rooms.value};expires=${formattedDate}`;
+
+    formElement.submit();
+  }
+
 }
