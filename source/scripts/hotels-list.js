@@ -1,7 +1,17 @@
 'Use strict';
-{
+
+  const TIMEOUT = 10000;
+  const ACTIVE_FILTER = 'filter-all';
   const container = document.querySelector('.hotels-list');
-  const IMAGE_TIMEOUT = 10000;
+  const filters = document.querySelectorAll('.hotel-filter');
+  let hotels = [];
+
+  for (let i = 0; i < filters.length; ++i) {
+    filters[i].onclick = event => {
+      let clickedId = event.target.id;
+      setFilter(clickedId);
+    }
+  }
 
   const getElementFromTemplate = function (data) {
     const template = document.querySelector('#hotelTemplate');
@@ -17,16 +27,16 @@
     let backgroundImage = new Image();
 
     const imageLoadTimeout = setTimeout(() => {
-      backgroundImage.src = null;
+      backgroundImage.src = '';
       element.classList.add('noimage');
-    }, IMAGE_TIMEOUT);
+    }, TIMEOUT);
 
     backgroundImage.onload = () => {
       clearTimeout(imageLoadTimeout);
       element.style.backgroundImage = `url(${backgroundImage.src})`;
     }
     backgroundImage.onerror = () => {
-      element.style.backgroundImage = null;
+      element.style.backgroundImage = '';
       element.classList.add('noimage');
     }
     backgroundImage.src = data.preview;
@@ -35,23 +45,50 @@
 
   getHotels();
 
-  function renderHotels(hotels) {
-    hotels.forEach(hotel => {
+  function renderHotels(hotelsToRender) {
+    container.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+
+    hotelsToRender.forEach(hotel => {
       const element = getElementFromTemplate(hotel);
-      container.appendChild(element);
+      fragment.appendChild(element);
     });
+    container.appendChild(fragment);
   }
 
   function getHotels() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', './source/data/hotels.json');
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
     xhr.onload = event => {
-      console.log(event);
       let rawData = event.target.response;
-      let loadedData = JSON.parse(rawData);
-      renderHotels(loadedData);
+      hotels = JSON.parse(rawData);
+      renderHotels(hotels);
     }
     xhr.send();
   }
-}
+
+  function setFilter(id) {
+    // if (ACTIVE_FILTER === id) {
+    //   return;
+    // }
+    // document.getElementById(id).setAttribute('checked', 'true');
+    // document.getElementById(ACTIVE_FILTER).removeAttribute('checked');
+
+    let filtered = hotels.slice(0);
+
+    switch (id) {
+      case 'filter-expensive':
+        filtered = filtered.sort((a, b) => b.price - a.price);
+      break;
+      case 'filter-cheap':
+        filtered = filtered.sort((a, b) => a.price - b.price);
+      break;
+      case 'filter-stars':
+        filtered = filtered.sort((a, b) => b.stars - a.stars);
+      break;
+      case 'filter-all':
+        filtered = hotels;
+    }
+    renderHotels(filtered);
+  }
