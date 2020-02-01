@@ -37,9 +37,13 @@ let loadedData = null;
 
 function __jsonpCallback(hotels) {
   loadedData = hotels;
+  return renderLoadedDataToConsole();
+}
+
+function renderLoadedDataToConsole() {
   console.dir(loadedData);
 }
 
 let scriptElement = document.createElement('script');
-scriptElement.src = '/source/data/hotels.js';
+scriptElement.src = './source/data/hotels.js';
 document.body.appendChild(scriptElement);
