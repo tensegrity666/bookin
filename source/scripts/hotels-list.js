@@ -1,6 +1,7 @@
 'Use strict';
 
 const container = document.querySelector('.hotels-list');
+const IMAGE_TIMEOUT = 10000;
 
 const getElementFromTemplate = function (data) {
   const template = document.querySelector('#hotelTemplate');
@@ -15,35 +16,55 @@ const getElementFromTemplate = function (data) {
 
   let backgroundImage = new Image();
 
-  backgroundImage.onload = () => {
-    element.style.backgroundImage = `url(./source/${data.preview})`;
-  }
+  const imageLoadTimeout = setTimeout(() => {
+    backgroundImage.src = null;
+    element.classList.add('noimage');
+  }, IMAGE_TIMEOUT);
 
+  backgroundImage.onload = () => {
+    clearTimeout(imageLoadTimeout);
+    element.style.backgroundImage = `url(${backgroundImage.src})`;
+  }
   backgroundImage.onerror = () => {
+    element.style.backgroundImage = null;
     element.classList.add('noimage');
   }
-
-  element.style.backgroundImage = `url(./source/${data.preview})`;
-
+  backgroundImage.src = data.preview;
   return element;
 };
 
-// hotels.forEach(hotel => {
-//   const element = getElementFromTemplate(hotel);
-//   container.appendChild(element);
-// });
+getHotels();
 
-let loadedData = null;
-
-function __jsonpCallback(hotels) {
-  loadedData = hotels;
-  return renderLoadedDataToConsole();
+function renderHotels(hotels) {
+  hotels.forEach(hotel => {
+    const element = getElementFromTemplate(hotel);
+    container.appendChild(element);
+  });
 }
 
-function renderLoadedDataToConsole() {
-  console.dir(loadedData);
+function getHotels() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', './source/data/hotels.json');
+  xhr.timeout = 10000;
+  xhr.onload = event => {
+    let rawData = event.target.response;
+    let loadedData = JSON.parse(rawData);
+    renderHotels(loadedData);
+  }
+  xhr.send();
 }
 
-let scriptElement = document.createElement('script');
-scriptElement.src = './source/data/hotels.js';
-document.body.appendChild(scriptElement);
+// ! JSONP
+// let loadedData = null;
+// function __jsonpCallback(hotels) {
+//   loadedData = hotels;
+//   return renderLoadedDataToConsole();
+// }
+
+// function renderLoadedDataToConsole() {
+//   console.dir(loadedData);
+// }
+
+// let scriptElement = document.createElement('script');
+// scriptElement.src = './source/data/hotels.js';
+// document.body.appendChild(scriptElement);
