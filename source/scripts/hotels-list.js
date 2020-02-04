@@ -1,10 +1,13 @@
 'Use strict';
-
+{
   const TIMEOUT = 10000;
-  const ACTIVE_FILTER = 'filter-all';
+  let activeFilter = 'filter-all';
+  const PAGE_SIZE = 9;
   const container = document.querySelector('.hotels-list');
   const filters = document.querySelectorAll('.hotel-filter');
   let hotels = [];
+  let filtered = [];
+  let currentPage = 0;
 
   for (let i = 0; i < filters.length; ++i) {
     filters[i].onclick = event => {
@@ -43,13 +46,36 @@
     return element;
   };
 
+  let scrollTimeout;
+
+  window.addEventListener('scroll', event => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      console.log('scroll');
+      let footerCoordinates = document.querySelector('.footer').getBoundingClientRect();
+      let windowHeight = window.innerHeight;
+
+      if (footerCoordinates.bottom - windowHeight <= footerCoordinates.height)
+      if (currentPage < Math.ceil(filtered.length / PAGE_SIZE)) {
+        renderHotels(filtered, ++currentPage)
+      }
+    }, 100);
+  });
+
   getHotels();
 
-  function renderHotels(hotelsToRender) {
-    container.innerHTML = '';
+  function renderHotels(hotelsToRender, pageNumber, replace) {
+    if (replace) {
+      container.innerHTML = '';
+    }
+
     const fragment = document.createDocumentFragment();
 
-    hotelsToRender.forEach(hotel => {
+    let from = pageNumber * PAGE_SIZE;
+    let to = from + PAGE_SIZE;
+    let pageHotels = hotelsToRender.slice(from, to);
+
+    pageHotels.forEach(hotel => {
       const element = getElementFromTemplate(hotel);
       fragment.appendChild(element);
     });
@@ -63,19 +89,19 @@
     xhr.onload = event => {
       let rawData = event.target.response;
       hotels = JSON.parse(rawData);
-      renderHotels(hotels);
+      renderHotels(hotels, 0);
     }
     xhr.send();
   }
 
   function setFilter(id) {
-    // if (ACTIVE_FILTER === id) {
-    //   return;
-    // }
-    // document.getElementById(id).setAttribute('checked', 'true');
-    // document.getElementById(ACTIVE_FILTER).removeAttribute('checked');
+    if (activeFilter === id) {
+      return;
+    }
+    document.getElementById(id).setAttribute('checked', 'true');
+    document.getElementById(activeFilter).removeAttribute('checked');
 
-    let filtered = hotels.slice(0);
+    filtered = hotels.slice(0);
 
     switch (id) {
       case 'filter-expensive':
@@ -90,5 +116,8 @@
       case 'filter-all':
         filtered = hotels;
     }
-    renderHotels(filtered);
+    renderHotels(filtered, 0, true);
+
+    activeFilter = id;
   }
+}
