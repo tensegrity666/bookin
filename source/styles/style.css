@@ -2,9 +2,11 @@
   --background-color: linear-gradient(90deg, rgb(21, 45, 180) 10.9%, rgb(90, 29, 202) 40.5%, rgb(60, 4, 92) 74.9%);
   --text-color: rgb(235, 221, 205);
   --border-color: rgb(183, 216, 213);
+  --price-color: rgba(223, 214, 240, 0.7);
   --tablet-width: 768px;
   --desktop-width: 1024px;
   --border-radius: 10px;
+  --card-width: 340px;
 
   font-size: 10px;
   line-height: 20px;
@@ -12,6 +14,7 @@
 }
 
 .page {
+  position: relative;
   max-width: 100%;
   background: rgb(21, 45, 180);
   background: var(--background-color);
@@ -145,12 +148,13 @@
 .hotels-list {
   display: flex;
   flex-wrap: wrap;
-  width: 80vw;
+  width: calc(3 * (var(--card-width) + 40px));
 }
 
 .hotel {
+  box-sizing: border-box;
   position: relative;
-  width: 340px;
+  width: var(--card-width);
   height: 230px;
   border: 1px solid white;
   margin: 20px;
@@ -166,7 +170,7 @@
   color: black;
   padding: 5px;
   backdrop-filter: blur(5px);
-  background-color: rgba(223, 214, 240, 0.7);
+  background-color: var(--price-color);
 }
 
 .hotel__price {
@@ -177,7 +181,8 @@
   color: black;
   padding: 10px;
   text-decoration: none;
-  background-color: rgba(223, 214, 240, 0.7);
+  background-color: var(--price-color);
+
 }
 
 .hotel__stars {
@@ -188,4 +193,19 @@
   padding: 10px;
   font-size: 2rem;
   font-weight: bold;
+}
+
+.hotel__filters {
+  width: 30vw;
+  border-radius: var(--border-radius);
+}
+
+label, .hotel-filter {
+  cursor: pointer;
+}
+
+.footer {
+  width: 100vw;
+  height: 10vh;
+  background-color: var(--price-color);
 }
